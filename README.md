@@ -94,46 +94,42 @@ gtavbrowser-mcp
 
 ### Available Tools
 
-#### 1. `initialize`
-Initialize the GTA V browser with the game directory. Must be called before using other tools.
+The server automatically initializes with the GTA V directory provided at startup, so all tools are immediately available without any initialization step.
 
-**Parameters:**
-- `path` (optional): Path to GTA V directory. If not provided, uses the path from command line arguments.
-
-#### 2. `list_rpf_files`
+#### 1. `list_rpf_files`
 List all available RPF archive files in the GTA V directory.
 
 **Parameters:**
 - `pattern` (optional): Pattern to filter RPF files
 
-#### 3. `list_directory`
+#### 2. `list_directory`
 List contents of a directory within an RPF archive.
 
 **Parameters:**
 - `rpfPath`: Path to the RPF file relative to GTA V directory
 - `directoryPath` (optional): Path within the RPF to list. Empty string for root.
 
-#### 4. `read_file`
+#### 3. `read_file`
 Read the contents of a file from an RPF archive. Returns text content for text files or base64 for binary files.
 
 **Parameters:**
 - `rpfPath`: Path to the RPF file relative to GTA V directory
 - `filePath`: Path to the file within the RPF
 
-#### 5. `get_file_info`
+#### 4. `get_file_info`
 Get detailed information about a file or directory in an RPF archive.
 
 **Parameters:**
 - `rpfPath`: Path to the RPF file relative to GTA V directory
 - `filePath`: Path to the file or directory within the RPF
 
-#### 6. `search_files`
+#### 5. `search_files`
 Search for files across all RPF archives using a pattern.
 
 **Parameters:**
 - `pattern`: Search pattern (supports wildcards with *)
 
-#### 7. `get_directory_tree`
+#### 6. `get_directory_tree`
 Get a tree structure of directories and files in an RPF archive.
 
 **Parameters:**
@@ -141,7 +137,7 @@ Get a tree structure of directories and files in an RPF archive.
 - `directoryPath` (optional): Starting directory path within the RPF
 - `maxDepth` (optional): Maximum depth to traverse (default: 3)
 
-#### 8. `extract_file`
+#### 7. `extract_file`
 Extract a file from an RPF archive to local filesystem.
 
 **Parameters:**

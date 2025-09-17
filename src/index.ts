@@ -23,29 +23,25 @@ if (!gtaPath) {
   console.error("Error: GTA V directory path is required");
   console.error("");
   console.error("Usage:");
-  console.error("  Direct: mcp-server-gtavbrowser <gta-v-directory>");
-  console.error("  NPX: npx @modelcontextprotocol/server-gtavbrowser <gta-v-directory>");
+  console.error("  Direct: gtavbrowser-mcp <gta-v-directory>");
+  console.error("  NPX: npx gtavbrowser-mcp <gta-v-directory>");
   console.error("  Environment: Set GTA_V_PATH environment variable");
   console.error("");
   console.error("Example:");
-  console.error("  mcp-server-gtavbrowser \"C:\\Program Files\\Rockstar Games\\Grand Theft Auto V\"");
+  console.error("  gtavbrowser-mcp \"C:\\Program Files\\Rockstar Games\\Grand Theft Auto V\"");
   console.error("");
   console.error("For Claude Desktop, add to config:");
   console.error("  \"gtavbrowser\": {");
   console.error("    \"command\": \"npx\",");
   console.error("    \"args\": [");
   console.error("      \"-y\",");
-  console.error("      \"@modelcontextprotocol/server-gtavbrowser\",");
+  console.error("      \"gtavbrowser-mcp\",");
   console.error("      \"C:/Program Files/Rockstar Games/Grand Theft Auto V\"");
   console.error("    ]");
   console.error("  }");
   process.exit(1);
 }
 const rpfManager = new RpfManager();
-
-const InitializeArgsSchema = z.object({
-  path: z.string().optional().describe('Path to GTA V directory. If not provided, uses the path from command line arguments.')
-});
 
 const ListRpfArgsSchema = z.object({
   pattern: z.string().optional().describe('Optional pattern to filter RPF files')
@@ -98,11 +94,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "initialize",
-        description: "Initialize the GTA V browser with the game directory. Must be called before using other tools.",
-        inputSchema: zodToJsonSchema(InitializeArgsSchema) as ToolInput,
-      },
-      {
         name: "list_rpf_files",
         description: "List all available RPF archive files in the GTA V directory",
         inputSchema: zodToJsonSchema(ListRpfArgsSchema) as ToolInput,
@@ -146,28 +137,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
 
     switch (name) {
-      case "initialize": {
-        const parsed = InitializeArgsSchema.safeParse(args);
-        if (!parsed.success) {
-          throw new Error(`Invalid arguments: ${parsed.error}`);
-        }
-
-        const initPath = parsed.data.path || gtaPath;
-        await rpfManager.init(initPath);
-
-        const rpfCount = rpfManager.getRpfList().length;
-        return {
-          content: [{
-            type: "text",
-            text: `Successfully initialized GTA V browser at ${initPath}\nFound ${rpfCount} RPF archives`
-          }],
-        };
-      }
-
       case "list_rpf_files": {
-        if (!rpfManager.isInitialized()) {
-          throw new Error("RPF manager not initialized. Call 'initialize' first.");
-        }
 
         const parsed = ListRpfArgsSchema.safeParse(args);
         if (!parsed.success) {
@@ -192,9 +162,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "list_directory": {
-        if (!rpfManager.isInitialized()) {
-          throw new Error("RPF manager not initialized. Call 'initialize' first.");
-        }
 
         const parsed = ListDirectoryArgsSchema.safeParse(args);
         if (!parsed.success) {
@@ -233,9 +200,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "read_file": {
-        if (!rpfManager.isInitialized()) {
-          throw new Error("RPF manager not initialized. Call 'initialize' first.");
-        }
 
         const parsed = ReadFileArgsSchema.safeParse(args);
         if (!parsed.success) {
@@ -279,9 +243,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "get_file_info": {
-        if (!rpfManager.isInitialized()) {
-          throw new Error("RPF manager not initialized. Call 'initialize' first.");
-        }
 
         const parsed = GetFileInfoArgsSchema.safeParse(args);
         if (!parsed.success) {
@@ -318,9 +279,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "search_files": {
-        if (!rpfManager.isInitialized()) {
-          throw new Error("RPF manager not initialized. Call 'initialize' first.");
-        }
 
         const parsed = SearchFilesArgsSchema.safeParse(args);
         if (!parsed.success) {
@@ -357,9 +315,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "get_directory_tree": {
-        if (!rpfManager.isInitialized()) {
-          throw new Error("RPF manager not initialized. Call 'initialize' first.");
-        }
 
         const parsed = GetDirectoryTreeArgsSchema.safeParse(args);
         if (!parsed.success) {
@@ -385,9 +340,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "extract_file": {
-        if (!rpfManager.isInitialized()) {
-          throw new Error("RPF manager not initialized. Call 'initialize' first.");
-        }
 
         const parsed = ExtractFileArgsSchema.safeParse(args);
         if (!parsed.success) {
@@ -432,11 +384,16 @@ async function runServer() {
     console.error("Initializing GTA V Browser MCP Server...");
     console.error(`GTA V Directory: ${gtaPath}`);
 
+    // Initialize RPF manager with the provided path
+    console.error("Loading RPF archives...");
+    await rpfManager.init(gtaPath);
+    const rpfCount = rpfManager.getRpfList().length;
+    console.error(`Successfully loaded ${rpfCount} RPF archives`);
+
     const transport = new StdioServerTransport();
     await server.connect(transport);
 
-    console.error("GTA V Browser MCP Server running on stdio");
-    console.error("Call 'initialize' to start browsing RPF archives");
+    console.error("GTA V Browser MCP Server ready on stdio");
   } catch (error) {
     console.error("Fatal error running server:", error);
     process.exit(1);
