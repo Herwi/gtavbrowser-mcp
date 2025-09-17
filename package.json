@@ -1,26 +1,30 @@
 {
-  "name": "@modelcontextprotocol/server-gtavbrowser",
+  "name": "gtavbrowser-mcp",
   "version": "0.1.0",
   "description": "MCP server for browsing GTA V files and RPF archives",
   "license": "MIT",
-  "author": "MCP Community",
+  "author": "Herwi",
   "repository": {
     "type": "git",
-    "url": "https://github.com/modelcontextprotocol/servers.git",
-    "directory": "src/gtavbrowser"
+    "url": "https://github.com/Herwi/gtavbrowser-mcp.git"
   },
-  "homepage": "https://modelcontextprotocol.io",
+  "homepage": "https://github.com/Herwi/gtavbrowser-mcp",
   "type": "module",
   "bin": {
-    "mcp-server-gtavbrowser": "dist/index.js"
+    "gtavbrowser-mcp": "dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE",
+    "examples"
   ],
   "scripts": {
     "build": "tsc && shx chmod +x dist/*.js",
     "prepare": "npm run build",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "test": "node test/test-basic.js",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0",
