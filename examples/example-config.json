@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "gtavbrowser": {
+      "command": "node",
+      "args": [
+        "D:/Dev/servers/src/gtavbrowser/dist/index.js",
+        "C:/Program Files/Rockstar Games/Grand Theft Auto V"
+      ],
+      "description": "Browse and extract files from GTA V RPF archives"
+    }
+  }
+}

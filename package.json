@@ -1,0 +1,35 @@
+{
+  "name": "@modelcontextprotocol/server-gtavbrowser",
+  "version": "0.1.0",
+  "description": "MCP server for browsing GTA V files and RPF archives",
+  "license": "MIT",
+  "author": "MCP Community",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/modelcontextprotocol/servers.git",
+    "directory": "src/gtavbrowser"
+  },
+  "homepage": "https://modelcontextprotocol.io",
+  "type": "module",
+  "bin": {
+    "mcp-server-gtavbrowser": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && shx chmod +x dist/*.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "zod": "^3.23.8",
+    "zod-to-json-schema": "^3.23.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "shx": "^0.3.4",
+    "typescript": "^5.8.2"
+  }
+}

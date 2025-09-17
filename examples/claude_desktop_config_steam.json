@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "gtavbrowser": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-gtavbrowser",
+        "C:/SteamLibrary/steamapps/common/Grand Theft Auto V"
+      ]
+    }
+  }
+}
