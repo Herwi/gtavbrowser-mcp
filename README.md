@@ -1,5 +1,7 @@
 # GTA V Browser MCP Server
 
+[![npm version](https://badge.fury.io/js/gtavbrowser-mcp.svg)](https://www.npmjs.com/package/gtavbrowser-mcp)
+
 A Model Context Protocol (MCP) server for browsing and extracting files from Grand Theft Auto V's RPF archives. Based on CodeWalker's RPF handling implementation.
 
 ## Quick Start with Claude Desktop
@@ -13,7 +15,7 @@ Add to your Claude Desktop configuration file:
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-gtavbrowser",
+        "gtavbrowser-mcp",
         "C:/Program Files/Rockstar Games/Grand Theft Auto V"
       ]
     }
@@ -40,13 +42,21 @@ Replace the path with your actual GTA V installation directory.
 No installation required! The server can be run directly with npx:
 
 ```bash
-npx @modelcontextprotocol/server-gtavbrowser "C:/Program Files/Rockstar Games/Grand Theft Auto V"
+npx gtavbrowser-mcp "C:/Program Files/Rockstar Games/Grand Theft Auto V"
+```
+
+### Global Installation
+
+```bash
+npm install -g gtavbrowser-mcp
+gtavbrowser-mcp "C:/Program Files/Rockstar Games/Grand Theft Auto V"
 ```
 
 ### Manual Installation
 
 ```bash
-cd src/gtavbrowser
+git clone https://github.com/Herwi/gtavbrowser-mcp.git
+cd gtavbrowser-mcp
 npm install
 npm run build
 ```
@@ -56,7 +66,15 @@ npm run build
 ### With NPX
 
 ```bash
-npx -y @modelcontextprotocol/server-gtavbrowser "C:/Program Files/Rockstar Games/Grand Theft Auto V"
+npx -y gtavbrowser-mcp "C:/Program Files/Rockstar Games/Grand Theft Auto V"
+```
+
+### Global Command
+
+If installed globally:
+
+```bash
+gtavbrowser-mcp "C:/Program Files/Rockstar Games/Grand Theft Auto V"
 ```
 
 ### Direct Execution
@@ -71,7 +89,7 @@ You can also set the GTA V path via environment variable:
 
 ```bash
 export GTA_V_PATH="C:/Program Files/Rockstar Games/Grand Theft Auto V"
-npx @modelcontextprotocol/server-gtavbrowser
+gtavbrowser-mcp
 ```
 
 ### Available Tools
@@ -144,7 +162,7 @@ The easiest way to use this server with Claude Desktop is through npx. Add to yo
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-gtavbrowser",
+        "gtavbrowser-mcp",
         "C:/Program Files/Rockstar Games/Grand Theft Auto V"
       ]
     }

@@ -1,7 +1,7 @@
 {
   "name": "gtavbrowser-mcp",
-  "version": "0.1.0",
-  "description": "MCP server for browsing GTA V files and RPF archives",
+  "version": "0.1.1",
+  "description": "Model Context Protocol (MCP) server for browsing and extracting files from Grand Theft Auto V's RPF archives",
   "license": "MIT",
   "author": "Herwi",
   "repository": {
@@ -9,6 +9,17 @@
     "url": "https://github.com/Herwi/gtavbrowser-mcp.git"
   },
   "homepage": "https://github.com/Herwi/gtavbrowser-mcp",
+  "keywords": [
+    "mcp",
+    "gta5",
+    "gtav",
+    "rpf",
+    "model-context-protocol",
+    "claude",
+    "ai",
+    "assistant",
+    "grand-theft-auto"
+  ],
   "type": "module",
   "bin": {
     "gtavbrowser-mcp": "dist/index.js"
