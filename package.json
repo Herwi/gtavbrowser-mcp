@@ -1,6 +1,6 @@
 {
   "name": "gtavbrowser-mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Model Context Protocol (MCP) server for browsing and extracting files from Grand Theft Auto V's RPF archives",
   "license": "MIT",
   "author": "Herwi",
@@ -31,7 +31,7 @@
     "examples"
   ],
   "scripts": {
-    "build": "tsc && shx chmod +x dist/*.js",
+    "build": "tsc && shx cp src/magic.dat dist/magic.dat && shx chmod +x dist/*.js",
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "test": "node test/test-basic.js",

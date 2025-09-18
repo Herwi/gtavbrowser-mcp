@@ -75,18 +75,23 @@ export class RpfBinaryFileEntry extends RpfFileEntry {
   encryptionType: number = 0;
 
   read(data: DataView, offset: number): void {
-    const d1 = data.getBigUint64(offset, true);
-    const d2 = data.getBigUint64(offset + 8, true);
+    // Read first 64-bit value (ulong buf in CodeWalker)
+    const buf = data.getBigUint64(offset, true);
 
-    this.nameOffset = Number((d1 >> 0n) & 0xFFFFn);
-    this.fileSize = Number((d1 >> 16n) & 0xFFFFFFn);
-    this.fileOffset = Number((d1 >> 40n) & 0xFFFFFFn);
+    this.nameOffset = Number((buf >> 0n) & 0xFFFFn);
+    this.fileSize = Number((buf >> 16n) & 0xFFFFFFn);
+    this.fileOffset = Number((buf >> 40n) & 0xFFFFFFn);
 
-    this.fileUncompressedSize = Number((d2 >> 0n) & 0xFFFFFFn);
-    this.encryptionType = Number((d2 >> 24n) & 0xFFn);
+    // Read FileUncompressedSize as separate UInt32
+    this.fileUncompressedSize = data.getUint32(offset + 8, true);
 
-    if ((d2 >> 32n) !== 0n) {
-      throw new Error(`Invalid binary file entry`);
+    // Read EncryptionType as separate UInt32
+    this.encryptionType = data.getUint32(offset + 12, true);
+
+
+    // Validate EncryptionType (CodeWalker throws "Error in RPF7 file entry." for invalid values)
+    if (this.encryptionType !== 0 && this.encryptionType !== 1) {
+      throw new Error(`Error in RPF7 file entry. Invalid EncryptionType: ${this.encryptionType}`);
     }
 
     this.isEncrypted = this.encryptionType !== 0;
@@ -170,6 +175,7 @@ export class RpfFile {
       this.namesLength = headerView.getUint32(8, true);
       this.encryption = headerView.getUint32(12, true);
 
+
       if (this.version !== 0x52504637) {
         throw new Error(`Invalid RPF version: ${this.version.toString(16)}`);
       }
@@ -212,13 +218,17 @@ export class RpfFile {
       const h2 = entriesView.getUint32(offset + 8, true);
 
       let entry: RpfEntry;
+      let entryType: string;
 
       if (h2 === 0x7FFFFF00) {
         entry = new RpfDirectoryEntry();
+        entryType = "Directory";
       } else if ((h2 & 0x80000000) === 0) {
         entry = new RpfBinaryFileEntry();
+        entryType = "Binary";
       } else {
         entry = new RpfResourceFileEntry();
+        entryType = "Resource";
       }
 
       entry.read(entriesView, offset);

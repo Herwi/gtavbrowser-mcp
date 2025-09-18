@@ -35,6 +35,14 @@ Replace the path with your actual GTA V installation directory.
 - Get detailed file information
 - Generate directory tree structures
 
+## Current Limitations
+
+⚠️ **NG Encryption**: Most GTA V RPF files use NG (Next Generation) encryption which requires complex decryption keys and tables extracted from the GTA V executable. This MCP currently only supports:
+- Unencrypted RPF files (OPEN encryption)
+- AES-encrypted RPF files
+
+NG-encrypted RPF files (which includes most official GTA V archives like `common.rpf`, `update.rpf`, and DLC archives) will be skipped with an error message. This significantly limits the current functionality until proper NG decryption is implemented.
+
 ## Installation
 
 ### Using NPX (Recommended)
